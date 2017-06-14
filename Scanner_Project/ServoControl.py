@@ -25,7 +25,7 @@ class Servo:
         delay = 0.02
         i = 0
         while i < travel_time / delay:
-            wp.pwmWrite(self.pin, time_ms*10)
+            wp.pwmWrite(self.pin, int(time_ms * 10))
             time.sleep(delay)
             i += 1
 

@@ -1,0 +1,6 @@
+scan at time: 2017-06-13 22:04:27.731293
+ Reading at -180 degrees -> 1.0 cm
+ Reading at -90 degrees -> 1.0 cm
+ Reading at 0 degrees -> 1.0 cm
+ Reading at 90 degrees -> 1.0 cm
+ Reading at 180 degrees -> 1.0 cm
