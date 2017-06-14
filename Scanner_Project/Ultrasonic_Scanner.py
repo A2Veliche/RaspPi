@@ -2,6 +2,8 @@
 from gpiozero import DistanceSensor
 from ServoControl import Servo
 import datetime, time
+import sys
+import Geolocation
 
 servo_pin = 24
 echo_pin = 17
@@ -23,12 +25,16 @@ for i in scan_deg_list:
     time.sleep(time_between_turns)
 
 compressed_vals = list(zip(scan_deg_list, dist_list))
+date_time = datetime.datetime.now()
+lat, lon = Geolocation.get_coords()
 
-with open("Scan_Data.txt", 'w') as dataFile:
-    date_time = datetime.datetime.now()
-    dataFile.write("scan at time: {}".format(date_time))
-    for i in compressed_vals:
-        dataFile.write("\n Reading at {} degrees -> {} cm".format(i[0], i[1]))
-    dataFile.close()
+dataFile =  open("Scan_Data.txt", 'w')
+
+dataFile.write("scan at time: {}".format(date_time))
+dataFile.write("\nscan at coordinates: {}, {}".format(lat, lon))
+for i in compressed_vals:
+    dataFile.write("\n Reading at {} degrees -> {} cm".format(i[0], i[1]))
+
+dataFile.close()
 
 print("Done! \n")
