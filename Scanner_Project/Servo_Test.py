@@ -1,26 +1,28 @@
+from Tkinter import *
+import RPi.GPIO as GPIO
 import time
-import wiringpi
- 
-# use 'GPIO naming'
-wiringpi.wiringPiSetupGpio()
- 
-# set #18 to be a PWM output
-wiringpi.pinMode(18, wiringpi.GPIO.PWM_OUTPUT)
- 
-# set the PWM mode to milliseconds stype
-wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
- 
-# divide down clock
-wiringpi.pwmSetClock(192)
-wiringpi.pwmSetRange(2000)
- 
-delay_period = 0.01
- 
-while True:
-        for pulse in range(50, 250, 1):
-                wiringpi.pwmWrite(18, pulse)
-                time.sleep(delay_period)
-        for pulse in range(250, 50, -1):
-                wiringpi.pwmWrite(18, pulse)
-                time.sleep(delay_period)
-                
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+pwm = GPIO.PWM(18, 100)
+pwm.start(5)
+
+class App:
+
+    def __init__(self, master):
+        frame = Frame(master)
+        frame.pack()
+        scale = Scale(frame, from_=0, to=180,
+              orient=HORIZONTAL, command=self.update)
+        scale.grid(row=0)
+
+
+    def update(self, angle):
+        duty = float(angle) / 10.0 + 2.5
+        pwm.ChangeDutyCycle(duty)
+
+root = Tk()
+root.wm_title('Servo Control')
+app = App(root)
+root.geometry("200x50+0+0")
+root.mainloop()
